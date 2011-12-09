@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset=utf-8 />
+    <style>
+      body {
+        background: #000;
+        color: #fff;
+        text-align: center;
+      }
+      div {
+        margin: 0 auto;
+      }
+    </style>
+    <script type="text/javascript" src="main.js"></script>
+  </head>
+
+  <body onload="processor.doLoad()">
+    <div>
+      <video id="video" controls="true" width="480" height="270">
+        <source src="/video/webm/Big_Buck_Bunny_Trailer.webm" type="video/webm"/>
+        <source src="/video/ogv/Big_Buck_Bunny_Trailer.ogv" type="video/ogg"/>
+        <source src="/video/m4v/Big_Buck_Bunny_Trailer.m4v" type="video/mp4"/>
+      </video>
+    </div>
+    <p>Average frame colour</p>
+    <div>
+      <canvas id="fingerprint" width="1600" height="64"></canvas>
+    </div>
+    <p>Delta - (Inverted) Difference in frame colour (from the previous frame)</p>
+    <div>
+      <canvas id="deltaprint" width="1600" height="64"></canvas>
+    </div>
+
+    <div style="display:none">
+      <canvas id="c1" width="480" height="270"></canvas>
+    </div>
+
+  </body>
+</html>
