@@ -1,10 +1,13 @@
 var processor = {
+  interval : 100, // interval between frame samples (ms)
+  sample : 1,     // sample colour every n pixels
   framenum : 0,
   oldAverageR : 0,
   oldAverageG : 0,
   oldAverageB : 0,
   timerCallback: function() {
-    if (this.video.paused || this.video.ended) {
+    this.video.pause();
+    if (this.video.ended || this.video.currentTime >= this.video.duration ) {
       return;
     }
     this.computeFrame();
@@ -49,7 +52,7 @@ var processor = {
     var totalR = 0, totalG = 0, totalB = 0;
 
 
-    for (var i = 0; i < l; i++) {
+    for (var i = 0; i < l; i = i + this.sample) {
       var grey = (frame.data[i * 4 + 0] + frame.data[i * 4 + 1] + frame.data[i * 4 + 2]) / 3;
 
       totalR += frame.data[i * 4 + 0];
@@ -58,9 +61,9 @@ var processor = {
     }
     //this.ctx1.putImageData(frame, 0, 0);
 
-    var averageR = Math.floor(totalR/l);
-    var averageG = Math.floor(totalG/l);
-    var averageB = Math.floor(totalB/l);
+    var averageR = Math.floor(totalR/(l/this.sample));
+    var averageG = Math.floor(totalG/(l/this.sample));
+    var averageB = Math.floor(totalB/(l/this.sample));
 
     var deltaTolerance = 100;
 
@@ -109,6 +112,17 @@ var processor = {
     //document.body.style.backgroundColor="rgb("+averageR+","+averageG+","+averageB+")";
 
     this.framenum++;
+
+    // jump to next time
+
+    var jumpTo = this.interval * this.framenum;
+    //console.log(jumpTo);
+    this.video.currentTime = jumpTo/1000;
+    //console.log(this.framenum);
+    //console.log(this.video.currentTime);
+    //console.log(this.video.ended);
+    //console.log(this.video.duration);
+    
     return;
   }
 };
